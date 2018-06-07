@@ -15,8 +15,10 @@ This project is created to integrate **tulipy** functions with **Pandas** librar
  * tulipy
  
 ## Installation
+
 ### Linux
-#### Debian based distros
+
+#### Debian based
 
 ```bash
 # requirements installation
@@ -28,17 +30,23 @@ sudo pip install --user tulipy
 
 ## Usage
 
+Just import needed functions and call.
+
 ```python
-    TODO
-    from pantulipy import EMA
-     
+import pandas as pd
+from pantulipy import ema
+# replace this by your OHLC DataFrame
+ohlc_data = pd.DataFrame()
+print(ema(ohlc_data, 5).tail())
 ```
 
 ## TODO
+ * [ ] Implement class with functions.
  * [ ] Write some documentation.
  * [ ] Write some tests.
 
 ## Changelog
-
+### 0.1.1
+ * Now *_tup* function fit ohlc size and fill nan values by using DataFrame *bfill* method
 ### 0.1.0
  * Initial version.

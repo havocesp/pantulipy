@@ -20,7 +20,7 @@ from .core import (ad, adosc, adx, adxr, ao, apo, aroon, aroonosc, atr, avgprice
                   psar, pvi, qstick, roc, rocr, rsi, sma, stderr, stoch, tema, tr, trima, trix, tsf, typprice, ultosc,
                   vhf, vidya, volatility, vosc, vwma, wad, wcprice, wilders, willr, wma, zlema)
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 __author__ = 'Daniel J. Umpierrez'
 __license__ = 'MIT'
 __package__ = 'pantulipy'

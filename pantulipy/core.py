@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import inspect as insp
 
+import numpy as np
 import pandas as pd
 import tulipy
 from tulipy.lib import _Indicator
@@ -36,7 +37,11 @@ def _tup(fn, ohlc, *args, **kwargs):
     fn_params = list(args) + list(kwargs.values())
     fn_name = fn.__name__.upper()
     data = fn(*_get_ohlcv_arrays(fn, ohlc), *fn_params)
-    return pd.Series(data, index=ohlc.index, name=fn_name)
+    if data is not None:
+        num_rows = len(ohlc) - len(data)
+        result = list((np.nan,) * num_rows) + data.tolist()
+        data = pd.Series(result, index=ohlc.index, name=fn_name).bfill()  # type: pd.Series
+    return data
 
 
 def ad(data):
