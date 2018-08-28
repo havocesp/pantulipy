@@ -43,7 +43,7 @@ print(ema(ohlc_data, 5).tail())
 
 ## TODO
  * [ ] Implement class with functions.
- * [*] Write some documentation.
+ * [x] Write some documentation.
  * [ ] Write some tests.
 
 ## Changelog
