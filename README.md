@@ -49,6 +49,8 @@ print(ema(ohlc_data, 5).tail())
 ## Changelog
 ### 0.1.2
  * Added most common default values for many functions.
+ * Some code refactor.
+ * Added "requirements.txt" file.
 ### 0.1.1
  * Now *_tup* function fit ohlc size and fill nan values by using DataFrame *bfill* method
 ### 0.1.0
