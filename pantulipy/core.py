@@ -4,7 +4,6 @@ import inspect as insp
 import numpy as np
 import pandas as pd
 import tulipy
-from tulipy.lib import _Indicator
 
 _OHLCV = ['open', 'high', 'low', 'close', 'volume']
 _FUNCS = sorted([f for f in dir(tulipy) if f[0].islower() and 'lib' not in f])
@@ -54,7 +53,7 @@ def ad(data):
     return _tup(getattr(tulipy, 'ad'), data)
 
 
-def adosc(data, short_period, long_period):
+def adosc(data, short_period=3, long_period=10):
     """
     Accumulation/Distribution Oscillator.
 
@@ -110,7 +109,7 @@ def apo(data, short_period, long_period):
     return _tup(getattr(tulipy, 'apo'), data, short_period, long_period)
 
 
-def aroon(data, period):
+def aroon(data, period=14):
     """
     Aroon.
 
@@ -121,7 +120,7 @@ def aroon(data, period):
     return _tup(getattr(tulipy, 'aroon'), data, period)
 
 
-def aroonosc(data, period):
+def aroonosc(data, period=14):
     """
     Aroon Oscillator.
 
@@ -132,7 +131,7 @@ def aroonosc(data, period):
     return _tup(getattr(tulipy, 'aroonosc'), data, period)
 
 
-def atr(data, period):
+def atr(data, period=14):
     """
     Average True Range.
 
@@ -175,7 +174,7 @@ def bop(data):
     return _tup(getattr(tulipy, 'bop'), data)
 
 
-def cci(data, period):
+def cci(data, period=20):
     """
     Commodity Channel Index.
 
@@ -219,7 +218,7 @@ def crossover(data):
 
 def cvi(data, period):
     """
-    Chaikins Volatility.
+    Chaikin's Volatility.
 
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
@@ -305,7 +304,7 @@ def edecay(data, period):
     return _tup(getattr(tulipy, 'edecay'), data, period)
 
 
-def ema(data, period):
+def ema(data, period=5):
     """
     Exponential Moving Average.
 
@@ -393,7 +392,7 @@ def lag(data, period):
     return _tup(getattr(tulipy, 'lag'), data, period)
 
 
-def linreg(data, period):
+def linreg(data, period=50):
     """
     Linear Regression.
 
@@ -404,7 +403,7 @@ def linreg(data, period):
     return _tup(getattr(tulipy, 'linreg'), data, period)
 
 
-def linregintercept(data, period):
+def linregintercept(data, period=50):
     """
     Linear Regression Intercept.
 
@@ -415,7 +414,7 @@ def linregintercept(data, period):
     return _tup(getattr(tulipy, 'linregintercept'), data, period)
 
 
-def linregslope(data, period):
+def linregslope(data, period=50):
     """
     Linear Regression Slope.
 
@@ -471,7 +470,7 @@ def md(data, period):
     return _tup(getattr(tulipy, 'md'), data, period)
 
 
-def mfi(data, period):
+def mfi(data, period=14):
     """
     Money Flow Index.
 
@@ -482,7 +481,7 @@ def mfi(data, period):
     return _tup(getattr(tulipy, 'mfi'), data, period)
 
 
-def mom(data, period):
+def mom(data, period=9):
     """
     Momentum.
 
@@ -504,7 +503,7 @@ def msw(data, period):
     return _tup(getattr(tulipy, 'msw'), data, period)
 
 
-def natr(data, period):
+def natr(data, period=14):
     """
     Normalized Average True Range.
 
@@ -580,7 +579,7 @@ def qstick(data, period):
     return _tup(getattr(tulipy, 'qstick'), data, period)
 
 
-def roc(data, period):
+def roc(data, period=9):
     """
     Rate Of Change.
 
@@ -591,7 +590,7 @@ def roc(data, period):
     return _tup(getattr(tulipy, 'roc'), data, period)
 
 
-def rocr(data, period):
+def rocr(data, period=9):
     """
     Rate Of Change Ratio.
 
@@ -602,7 +601,7 @@ def rocr(data, period):
     return _tup(getattr(tulipy, 'rocr'), data, period)
 
 
-def rsi(data, period):
+def rsi(data, period=14):
     """
     Relative Strength Index.
 
@@ -613,7 +612,7 @@ def rsi(data, period):
     return _tup(getattr(tulipy, 'rsi'), data, period)
 
 
-def sma(data, period):
+def sma(data, period=5):
     """
     Simple Moving Average.
 
@@ -814,7 +813,7 @@ def wilders(data, period):
     return _tup(getattr(tulipy, 'wilders'), data, period)
 
 
-def willr(data, period):
+def willr(data, period=14):
     """
     Williams %R.
 
@@ -845,50 +844,3 @@ def zlema(data, period):
     :return pd.Series: indicator results as pandas Series instance.
     """
     return _tup(getattr(tulipy, 'zlema'), data, period)
-
-
-# if __name__ == '__main__':
-
-#
-#     print([*map(str.lower, desired_funcs)])
-if __name__ == '__main__':
-
-    desired_funcs = ['AD', 'ADOSC', 'ADX', 'ADXR', 'AO', 'APO', 'AROON', 'AROONOSC', 'ATR', 'AVGPRICE', 'BBANDS', 'BOP',
-                     'CCI', 'CMO', 'CROSSANY', 'CROSSOVER', 'CVI', 'DECAY', 'DEMA', 'DI', 'DM', 'DPO', 'DX', 'EDECAY',
-                     'EMA', 'EMV', 'FISHER', 'FOSC', 'HMA', 'KAMA', 'KVO', 'LAG', 'LINREG', 'LINREGINTERCEPT',
-                     'LINREGSLOPE', 'MACD', 'MARKETFI', 'MASS', 'MD', 'MFI', 'MOM', 'MSW', 'NATR', 'NVI', 'OBV',
-                     'PPO', 'PSAR', 'PVI', 'QSTICK', 'ROC', 'ROCR', 'RSI', 'SMA', 'STDERR', 'STOCH', 'TEMA',
-                     'TR', 'TRIMA', 'TRIX', 'TSF', 'TYPPRICE', 'ULTOSC', 'VHF', 'VIDYA', 'VOLATILITY', 'VOSC', 'VWMA',
-                     'WAD', 'WCPRICE', 'WILDERS', 'WILLR', 'WMA', 'ZLEMA']
-    #
-    # pprint([fn for fn in dir(importlib.import_module(__name__)) if '_' not in fn[0] and fn.isupper()])
-    doc_string = """
-def {name}(data{options}):
-    '''
-    {full}.
-
-    :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).{params}
-    :return pd.Series: indicator results as pandas Series instance.
-    '''
-    return tup(getattr(tulipy, '{name}'), data{options})
-    """
-    for fn in desired_funcs:
-
-        ref = _FUNCTIONS_REFERENCES.get(fn.lower())
-        if not isinstance(ref, int): continue
-        f = _Indicator(ref)
-        fn = str(f.name, encoding='utf-8')
-        full_name = str(f.full_name, encoding='utf-8')
-        option_params = [str(s, encoding='utf-8') for s in f.options]
-        options = ', ' + ', '.join([s.strip().replace(' ', '_') for s in option_params]) if len(option_params) else ''
-        params = []
-        params_doc = '\n'.join(["    :param {opt}: TODO""".format(opt=opt.strip().replace(' ',
-                                                                                          '_')) if opt != 'period' else "    :param int {opt}: number of period used for indicators calcs.""".format(
-            opt=opt) for opt in option_params])
-        if len(params_doc):
-            params_doc = '\n' + params_doc
-        print(doc_string.format(full=full_name.title(), params=params_doc, name=fn,
-                                options=options.replace('\n', '')).replace("'''", '"""'))
-
-# 'def {fn}(data, *args, **kwargs):\n    \n    """\n    {full}\n\n    :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).\n    :return pd.Series: indicator results as pandas Series instance.\n    """\n    return tup({fn}, data, *args, **kwargs)\n\n'.format(
-#     fn=fn.upper(), full=full_name.title()))

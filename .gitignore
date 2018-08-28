@@ -1,0 +1,7 @@
+### JetBrains template
+.idea/
+### Visual Studio Code
+.vscode/
+### Python template
+# Distribution / packaging
+*.egg-info/

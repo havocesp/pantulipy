@@ -3,7 +3,7 @@
 Pandas over then Tulipy technical indicators library.
 
 * Author: Daniel J. Umpierrez
-* Version: 0.1.0
+* Version: 0.1.2
 * License: MIT
 
 ## Description
@@ -11,6 +11,7 @@ Pandas over then Tulipy technical indicators library.
 This project is created to integrate **tulipy** functions with **Pandas** library.
 
 ## Requirements
+ * numpy
  * pandas
  * tulipy
  
@@ -27,7 +28,6 @@ sudo apt-get install python3-pandas python3-pip  python3-cython
 sudo pip install --user tulipy
 ```
 
-
 ## Usage
 
 Just import needed functions and call.
@@ -35,6 +35,7 @@ Just import needed functions and call.
 ```python
 import pandas as pd
 from pantulipy import ema
+
 # replace this by your OHLC DataFrame
 ohlc_data = pd.DataFrame()
 print(ema(ohlc_data, 5).tail())
@@ -42,10 +43,12 @@ print(ema(ohlc_data, 5).tail())
 
 ## TODO
  * [ ] Implement class with functions.
- * [ ] Write some documentation.
+ * [*] Write some documentation.
  * [ ] Write some tests.
 
 ## Changelog
+### 0.1.2
+ * Added most common default values for many functions.
 ### 0.1.1
  * Now *_tup* function fit ohlc size and fill nan values by using DataFrame *bfill* method
 ### 0.1.0
