@@ -22,7 +22,7 @@ from .core import (ad, adosc, adx, adxr, ao, apo, aroon, aroonosc, atr, avgprice
 
 __version__ = '0.1.1'
 __author__ = 'Daniel J. Umpierrez'
-__license__ = 'MIT'
+__license__ = 'UNLICENSE'
 __package__ = 'pantulipy'
 __description__ = 'A Pandas over then Tulipy technical indicators library.'
 __site__ = 'https://github.com/havocesp/' + __package__
