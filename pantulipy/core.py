@@ -21,7 +21,13 @@ def _get_ohlcv_arrays(fn, ohlc):
     sign = list(insp.signature(fn).parameters.keys())
     params = ['close' if 'real' in p else p
               for p in sign if p in _OHLCV or 'real' in p]
-    return ohlc[params].T.values
+    if isinstance(ohlc, pd.Series):
+        assert len(params) == 1, \
+            ('{} requires pd.DataFrame with columns {}, not pd.Series'
+             .format(fn.__name__, params))
+        return np.asarray([ohlc.values])
+    else:
+        return ohlc[params].T.values
 
 
 def _tup(fn, ohlc, *args, **kwargs):
