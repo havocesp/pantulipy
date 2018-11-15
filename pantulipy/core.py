@@ -19,7 +19,8 @@ __all__ = ['ad', 'adosc', 'adx', 'adxr', 'ao', 'apo', 'aroon', 'aroonosc', 'atr'
 
 def _get_ohlcv_arrays(fn, ohlc):
     sign = list(insp.signature(fn).parameters.keys())
-    params = ['close' if 'real' in p else p for p in sign if p in _OHLCV]
+    params = ['close' if 'real' in p else p
+              for p in sign if p in _OHLCV or 'real' in p]
     return ohlc[params].T.values
 
 
