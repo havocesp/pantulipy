@@ -38,17 +38,24 @@ def _tup(fn, ohlc, *args, **kwargs):
     :param pd.DataFrame ohlc: a Pandas DataFrame type with open, high, low, close and or volume columns.
     :param args: function positional params.
     :param kwargs: function key pair params.
-    :return pd.Series: a Pandas Series with data result.
+    :return pd.Series or Tuple(pd.Series, ...): a Pandas Series with data result or 
+        a tuple of pd.series.
     """
     fn_params = list(args) + list(kwargs.values())
     fn_name = fn.__name__.upper()
     data = fn(*_get_ohlcv_arrays(fn, ohlc), *fn_params)
-    if data is not None:
-        num_rows = len(ohlc) - len(data)
-        result = list((np.nan,) * num_rows) + data.tolist()
-        data = pd.Series(result, index=ohlc.index, name=fn_name).bfill()  # type: pd.Series
+
+    if type(data) == tuple:
+        data = [_data_handler(arr, ohlc, fn_name) for arr in data]
+    elif data is not None:
+        data = _data_handler(data, ohlc, fn_name)
     return data
 
+def _data_handler(data, ohlc, fn_name):
+    num_rows = len(ohlc) - len(data)
+    result = list((np.nan,) * num_rows) + data.tolist()
+    data = pd.Series(result, index=ohlc.index, name=fn_name).bfill()  # type: pd.Series
+    return data
 
 def ad(data):
     """
