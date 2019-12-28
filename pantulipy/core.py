@@ -38,7 +38,7 @@ def _tup(fn, ohlc, *args, **kwargs):
     :param pd.DataFrame ohlc: a Pandas DataFrame type with open, high, low, close and or volume columns.
     :param args: function positional params.
     :param kwargs: function key pair params.
-    :return pd.Series or Tuple(pd.Series, ...): a Pandas Series with data result or 
+    :return pd.Series or List(pd.Series, ...): a Pandas Series with data result or 
         a tuple of pd.series.
     """
     fn_params = list(args) + list(kwargs.values())
@@ -58,7 +58,7 @@ def _data_handler(data, ohlc, fn_name):
     :param np.array data: data to cast
     :param pd.DataFrame ohlc: a Pandas DataFrame type with open, high, low, close and or volume columns.
     :param string fn_name: function name
-    :return pd.Series or Tuple(pd.Series, ...): a Pandas Series with data result or 
+    :return pd.Series or List(pd.Series, ...): a Pandas Series with data result or 
         a tuple of pd.series.
     """
     num_rows = len(ohlc) - len(data)
