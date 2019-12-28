@@ -18,7 +18,7 @@ from .core import (ad, adosc, adx, adxr, ao, apo, aroon, aroonosc, atr, avgprice
                   crossover, cvi, decay, dema, di, dm, dpo, dx, edecay, ema, emv, fisher, fosc, hma, kama, kvo, lag,
                   linreg, linregintercept, linregslope, macd, marketfi, mass, md, mfi, mom, msw, natr, nvi, obv, ppo,
                   psar, pvi, qstick, roc, rocr, rsi, sma, stderr, stoch, tema, tr, trima, trix, tsf, typprice, ultosc,
-                  vhf, vidya, volatility, vosc, vwma, wad, wcprice, wilders, willr, wma, zlema)
+                  vhf, vidya, volatility, vosc, vwma, wad, wcprice, wilders, willr, wma, zlema, InvalidOptionError)
 
 __version__ = '0.1.1'
 __author__ = 'Daniel J. Umpierrez'
@@ -43,4 +43,4 @@ __all__ = ['__version__', '__author__', '__license__', '__package__', '__descrip
            'linregintercept', 'linregslope', 'macd', 'marketfi', 'mass', 'md', 'mfi', 'mom', 'msw', 'natr', 'nvi',
            'obv', 'ppo', 'psar', 'pvi', 'qstick', 'roc', 'rocr', 'rsi', 'sma', 'stderr', 'stoch', 'tema', 'tr', 'trima',
            'trix', 'tsf', 'typprice', 'ultosc', 'vhf', 'vidya', 'volatility', 'vosc', 'vwma', 'wad', 'wcprice',
-           'wilders', 'willr', 'wma', 'zlema']
+           'wilders', 'willr', 'wma', 'zlema', 'InvalidOptionError']

@@ -14,9 +14,9 @@ __all__ = ['ad', 'adosc', 'adx', 'adxr', 'ao', 'apo', 'aroon', 'aroonosc', 'atr'
            'fisher', 'fosc', 'hma', 'kama', 'kvo', 'lag', 'linreg', 'linregintercept', 'linregslope', 'macd',
            'marketfi', 'mass', 'md', 'mfi', 'mom', 'msw', 'natr', 'nvi', 'obv', 'ppo', 'psar', 'pvi', 'qstick',
            'roc', 'rocr', 'rsi', 'sma', 'stderr', 'stoch', 'tema', 'tr', 'trima', 'trix', 'tsf', 'typprice', 'ultosc',
-           'vhf', 'vidya', 'volatility', 'vosc', 'vwma', 'wad', 'wcprice', 'wilders', 'willr', 'wma', 'zlema']
+           'vhf', 'vidya', 'volatility', 'vosc', 'vwma', 'wad', 'wcprice', 'wilders', 'willr', 'wma', 'zlema', 'InvalidOptionError']
 
-
+InvalidOptionError = tulipy.InvalidOptionError
 def _get_ohlcv_arrays(fn, ohlc):
     sign = list(insp.signature(fn).parameters.keys())
     params = ['close' if 'real' in p else p
