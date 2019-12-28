@@ -52,9 +52,18 @@ def _tup(fn, ohlc, *args, **kwargs):
     return data
 
 def _data_handler(data, ohlc, fn_name):
+    """
+    Converts Numpy Arrays into OHLC Pandas DataFrames
+
+    :param np.array data: data to cast
+    :param pd.DataFrame ohlc: a Pandas DataFrame type with open, high, low, close and or volume columns.
+    :param string fn_name: function name
+    :return pd.Series or Tuple(pd.Series, ...): a Pandas Series with data result or 
+        a tuple of pd.series.
+    """
     num_rows = len(ohlc) - len(data)
     result = list((np.nan,) * num_rows) + data.tolist()
-    data = pd.Series(result, index=ohlc.index, name=fn_name).bfill()  # type: pd.Series
+    data = pd.Series(result, index=ohlc.index, name=fn_name).bfill()
     return data
 
 def ad(data):
