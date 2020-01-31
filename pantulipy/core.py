@@ -14,9 +14,9 @@ __all__ = ['ad', 'adosc', 'adx', 'adxr', 'ao', 'apo', 'aroon', 'aroonosc', 'atr'
            'fisher', 'fosc', 'hma', 'kama', 'kvo', 'lag', 'linreg', 'linregintercept', 'linregslope', 'macd',
            'marketfi', 'mass', 'md', 'mfi', 'mom', 'msw', 'natr', 'nvi', 'obv', 'ppo', 'psar', 'pvi', 'qstick',
            'roc', 'rocr', 'rsi', 'sma', 'stderr', 'stoch', 'tema', 'tr', 'trima', 'trix', 'tsf', 'typprice', 'ultosc',
-           'vhf', 'vidya', 'volatility', 'vosc', 'vwma', 'wad', 'wcprice', 'wilders', 'willr', 'wma', 'zlema']
+           'vhf', 'vidya', 'volatility', 'vosc', 'vwma', 'wad', 'wcprice', 'wilders', 'willr', 'wma', 'zlema', 'InvalidOptionError']
 
-
+InvalidOptionError = tulipy.InvalidOptionError
 def _get_ohlcv_arrays(fn, ohlc):
     sign = list(insp.signature(fn).parameters.keys())
     params = ['close' if 'real' in p else p
@@ -38,17 +38,33 @@ def _tup(fn, ohlc, *args, **kwargs):
     :param pd.DataFrame ohlc: a Pandas DataFrame type with open, high, low, close and or volume columns.
     :param args: function positional params.
     :param kwargs: function key pair params.
-    :return pd.Series: a Pandas Series with data result.
+    :return pd.Series or List(pd.Series, ...): a Pandas Series with data result or 
+        a tuple of pd.series.
     """
     fn_params = list(args) + list(kwargs.values())
     fn_name = fn.__name__.upper()
     data = fn(*_get_ohlcv_arrays(fn, ohlc), *fn_params)
-    if data is not None:
-        num_rows = len(ohlc) - len(data)
-        result = list((np.nan,) * num_rows) + data.tolist()
-        data = pd.Series(result, index=ohlc.index, name=fn_name).bfill()  # type: pd.Series
+
+    if type(data) == tuple:
+        data = [_data_handler(arr, ohlc, fn_name) for arr in data]
+    elif data is not None:
+        data = _data_handler(data, ohlc, fn_name)
     return data
 
+def _data_handler(data, ohlc, fn_name):
+    """
+    Converts Numpy Arrays into OHLC Pandas DataFrames
+
+    :param np.array data: data to cast
+    :param pd.DataFrame ohlc: a Pandas DataFrame type with open, high, low, close and or volume columns.
+    :param string fn_name: function name
+    :return pd.Series or List(pd.Series, ...): a Pandas Series with data result or 
+        a tuple of pd.series.
+    """
+    num_rows = len(ohlc) - len(data)
+    result = list((np.nan,) * num_rows) + data.tolist()
+    data = pd.Series(result, index=ohlc.index, name=fn_name).bfill()
+    return data
 
 def ad(data):
     """
