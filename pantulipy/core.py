@@ -76,7 +76,7 @@ def _tup(fn, ohlc, *args, **kwargs):
         else:
             num_rows = len(ohlc) - len(data)
             result = list((np.nan,) * num_rows) + data.tolist()
-            data = pd.Series(result, index=ohlc.index, name=fn_name).bfill()
+            data = pd.Series(result, index=ohlc.index, name=fn_name.lower()).bfill()
     return data
 
 
