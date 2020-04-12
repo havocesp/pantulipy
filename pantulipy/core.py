@@ -20,6 +20,16 @@ __all__ = ['ad', 'adosc', 'adx', 'adxr', 'ao', 'apo', 'aroon', 'aroonosc', 'atr'
            'roc', 'rocr', 'rsi', 'sma', 'stderr', 'stoch', 'tema', 'tr', 'trima', 'trix', 'tsf', 'typprice', 'ultosc',
            'vhf', 'vidya', 'volatility', 'vosc', 'vwma', 'wad', 'wcprice', 'wilders', 'willr', 'wma', 'zlema']
 
+_fx_column_names = {
+    'DI': ['PLUS', 'MINUS'], 
+    'DM': ['PLUS', 'MINUS'], 
+    'MSW': ['SINE', 'LEAD'], 
+    'AROON': ['DOWN', 'UP'], 
+    'BBANDS': ['LOWER', 'MIDDLE', 'UPPER'], 
+    'FISHER': ['LINE', 'SIGNAL'], 
+    'MACD': ['LINE', 'SIGNAL', 'HISTOGRAM'], 
+    'STOCH': ['LINE', 'MA']
+}
 
 def _get_ohlcv_arrays(fn, ohlc):
     sign = list(insp.signature(fn).parameters.keys())
@@ -48,9 +58,25 @@ def _tup(fn, ohlc, *args, **kwargs):
     fn_name = fn.__name__.upper()
     data = fn(*_get_ohlcv_arrays(fn, ohlc), *fn_params)
     if data is not None:
-        num_rows = len(ohlc) - len(data)
-        result = list((np.nan,) * num_rows) + data.tolist()
-        data = pd.Series(result, index=ohlc.index, name=fn_name).bfill()  # type: pd.Series
+        if type(data) == tuple:
+            data_tmp = pd.DataFrame()
+            i = 0
+            for arr in data:
+                num_rows = len(ohlc) - len(arr)
+                result = list((np.nan,) * num_rows) + arr.tolist()
+                suffix = _fx_column_names[fn_name][i] if fn_name in _fx_column_names.keys() else i
+                data_tmp = pd.concat([
+                                      data_tmp, 
+                                      pd.Series(result,
+                                                index=ohlc.index,
+                                                name=f'{fn_name}_{suffix}').bfill()
+                                      ], axis=1)
+                i += 1
+            data = data_tmp.copy()
+        else:
+            num_rows = len(ohlc) - len(data)
+            result = list((np.nan,) * num_rows) + data.tolist()
+            data = pd.Series(result, index=ohlc.index, name=fn_name).bfill()
     return data
 
 
