@@ -69,7 +69,7 @@ def _tup(fn, ohlc, *args, **kwargs):
                                       data_tmp, 
                                       pd.Series(result,
                                                 index=ohlc.index,
-                                                name=f'{fn_name}_{suffix}').bfill()
+                                                name=f'{fn_name.lower()}_{suffix.lower()}').bfill()
                                       ], axis=1)
                 i += 1
             data = data_tmp.copy()
