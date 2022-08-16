@@ -31,6 +31,7 @@ _fx_column_names = {
     'STOCH': ['LINE', 'MA']
 }
 
+InvalidOptionError = tulipy.InvalidOptionError
 def _get_ohlcv_arrays(fn, ohlc):
     sign = list(insp.signature(fn).parameters.keys())
     params = ['close' if 'real' in p else p
@@ -52,11 +53,13 @@ def _tup(fn, ohlc, *args, **kwargs):
     :param pd.DataFrame ohlc: a Pandas DataFrame type with open, high, low, close and or volume columns.
     :param args: function positional params.
     :param kwargs: function key pair params.
-    :return pd.Series: a Pandas Series with data result.
+    :return pd.Series or List(pd.Series, ...): a Pandas Series with data result or 
+        a tuple of pd.series.
     """
     fn_params = list(args) + list(kwargs.values())
     fn_name = fn.__name__.upper()
     data = fn(*_get_ohlcv_arrays(fn, ohlc), *fn_params)
+
     if data is not None:
         if type(data) == tuple:
             data_tmp = pd.DataFrame()
@@ -77,8 +80,23 @@ def _tup(fn, ohlc, *args, **kwargs):
             num_rows = len(ohlc) - len(data)
             result = list((np.nan,) * num_rows) + data.tolist()
             data = pd.Series(result, index=ohlc.index, name=fn_name.lower()).bfill()
+
     return data
 
+def _data_handler(data, ohlc, fn_name):
+    """
+    Converts Numpy Arrays into OHLC Pandas DataFrames
+
+    :param np.array data: data to cast
+    :param pd.DataFrame ohlc: a Pandas DataFrame type with open, high, low, close and or volume columns.
+    :param string fn_name: function name
+    :return pd.Series or List(pd.Series, ...): a Pandas Series with data result or 
+        a tuple of pd.series.
+    """
+    num_rows = len(ohlc) - len(data)
+    result = list((np.nan,) * num_rows) + data.tolist()
+    data = pd.Series(result, index=ohlc.index, name=fn_name).bfill()
+    return data
 
 def ad(data):
     """
