@@ -2,6 +2,11 @@
 """
     Pantulipy: a Pandas over then Tulipy technical indicators library.
 """
+from .core import (ad, adosc, adx, adxr, ao, apo, aroon, aroonosc, atr, avgprice, bbands, bop, cci, cmo, crossany,
+                   crossover, cvi, decay, dema, di, dm, dpo, dx, edecay, ema, emv, fisher, fosc, hma, kama, kvo, lag,
+                   linreg, linregintercept, linregslope, macd, marketfi, mass, md, mfi, mom, msw, natr, nvi, obv, ppo,
+                   psar, pvi, qstick, roc, rocr, rsi, sma, stderr, stoch, tema, tr, trima, trix, tsf, typprice, ultosc,
+                   vhf, vidya, volatility, vosc, vwma, wad, wcprice, wilders, willr, wma, zlema, InvalidOptionError)
 import os
 import sys
 
@@ -14,11 +19,6 @@ globals().update(DEBUG=DEBUG)
 
 sys.path.append(BASE_DIR)
 
-from .core import (ad, adosc, adx, adxr, ao, apo, aroon, aroonosc, atr, avgprice, bbands, bop, cci, cmo, crossany,
-                  crossover, cvi, decay, dema, di, dm, dpo, dx, edecay, ema, emv, fisher, fosc, hma, kama, kvo, lag,
-                  linreg, linregintercept, linregslope, macd, marketfi, mass, md, mfi, mom, msw, natr, nvi, obv, ppo,
-                  psar, pvi, qstick, roc, rocr, rsi, sma, stderr, stoch, tema, tr, trima, trix, tsf, typprice, ultosc,
-                  vhf, vidya, volatility, vosc, vwma, wad, wcprice, wilders, willr, wma, zlema, InvalidOptionError)
 
 __version__ = '0.1.2'
 __author__ = 'Daniel J. Umpierrez'
@@ -26,7 +26,7 @@ __license__ = 'UNLICENSE'
 __package__ = 'pantulipy'
 __description__ = 'A Pandas over then Tulipy technical indicators library.'
 __site__ = 'https://github.com/havocesp/' + __package__
-__email__ = 'umpierrez@pm.me'
+__email__ = '10012416+havocesp@users.noreply.github.com'
 __dependencies__ = [
     'newtulipy',
     'pandas'

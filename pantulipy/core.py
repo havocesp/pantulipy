@@ -3,7 +3,7 @@ import inspect as insp
 
 import numpy as np
 import pandas as pd
-import newtulipy as tulipy
+import tulipy
 
 _OHLCV = ['open', 'high', 'low', 'close', 'volume']
 _FUNCS = sorted([f for f in dir(tulipy) if f[0].islower() and 'lib' not in f])
@@ -11,7 +11,7 @@ _FUNCTIONS_REFERENCES = {fn: n for n, fn in enumerate(_FUNCS)}
 
 # Added so you can loop through the rest by just inputting a dataframe
 # These don't have useful default params we can put in.
-_DEFAULTLESS_INDICATORS = ['decay', 'edecay', 'lag', 'volatility'] 
+_DEFAULTLESS_INDICATORS = ['decay', 'edecay', 'lag', 'volatility']
 
 __all__ = ['ad', 'adosc', 'adx', 'adxr', 'ao', 'apo', 'aroon', 'aroonosc', 'atr', 'avgprice', 'bbands', 'bop', 'cci',
            'cmo', 'crossany', 'crossover', 'cvi', 'decay', 'dema', 'di', 'dm', 'dpo', 'dx', 'edecay', 'ema', 'emv',
@@ -21,17 +21,19 @@ __all__ = ['ad', 'adosc', 'adx', 'adxr', 'ao', 'apo', 'aroon', 'aroonosc', 'atr'
            'vhf', 'vidya', 'volatility', 'vosc', 'vwma', 'wad', 'wcprice', 'wilders', 'willr', 'wma', 'zlema']
 
 _fx_column_names = {
-    'DI': ['PLUS', 'MINUS'], 
-    'DM': ['PLUS', 'MINUS'], 
-    'MSW': ['SINE', 'LEAD'], 
-    'AROON': ['DOWN', 'UP'], 
-    'BBANDS': ['LOWER', 'MIDDLE', 'UPPER'], 
-    'FISHER': ['LINE', 'SIGNAL'], 
-    'MACD': ['LINE', 'SIGNAL', 'HISTOGRAM'], 
+    'DI': ['PLUS', 'MINUS'],
+    'DM': ['PLUS', 'MINUS'],
+    'MSW': ['SINE', 'LEAD'],
+    'AROON': ['DOWN', 'UP'],
+    'BBANDS': ['LOWER', 'MIDDLE', 'UPPER'],
+    'FISHER': ['LINE', 'SIGNAL'],
+    'MACD': ['LINE', 'SIGNAL', 'HISTOGRAM'],
     'STOCH': ['LINE', 'MA']
 }
 
 InvalidOptionError = tulipy.InvalidOptionError
+
+
 def _get_ohlcv_arrays(fn, ohlc):
     sign = list(insp.signature(fn).parameters.keys())
     params = ['close' if 'real' in p else p
@@ -53,7 +55,7 @@ def _tup(fn, ohlc, *args, **kwargs):
     :param pd.DataFrame ohlc: a Pandas DataFrame type with open, high, low, close and or volume columns.
     :param args: function positional params.
     :param kwargs: function key pair params.
-    :return pd.Series or List(pd.Series, ...): a Pandas Series with data result or 
+    :return pd.Series or List(pd.Series, ...): a Pandas Series with data result or
         a tuple of pd.series.
     """
     fn_params = list(args) + list(kwargs.values())
@@ -67,21 +69,24 @@ def _tup(fn, ohlc, *args, **kwargs):
             for arr in data:
                 num_rows = len(ohlc) - len(arr)
                 result = list((np.nan,) * num_rows) + arr.tolist()
-                suffix = _fx_column_names[fn_name][i] if fn_name in _fx_column_names.keys() else i
+                suffix = _fx_column_names[fn_name][i] if fn_name in _fx_column_names.keys(
+                ) else i
                 data_tmp = pd.concat([
-                                      data_tmp, 
-                                      pd.Series(result,
-                                                index=ohlc.index,
-                                                name=f'{fn_name.lower()}_{suffix.lower()}').bfill()
-                                      ], axis=1)
+                    data_tmp,
+                    pd.Series(result,
+                              index=ohlc.index,
+                              name=f'{fn_name.lower()}_{suffix.lower()}').bfill()
+                ], axis=1)
                 i += 1
             data = data_tmp.copy()
         else:
             num_rows = len(ohlc) - len(data)
             result = list((np.nan,) * num_rows) + data.tolist()
-            data = pd.Series(result, index=ohlc.index, name=fn_name.lower()).bfill()
+            data = pd.Series(result, index=ohlc.index,
+                             name=fn_name.lower()).bfill()
 
     return data
+
 
 def _data_handler(data, ohlc, fn_name):
     """
@@ -90,13 +95,14 @@ def _data_handler(data, ohlc, fn_name):
     :param np.array data: data to cast
     :param pd.DataFrame ohlc: a Pandas DataFrame type with open, high, low, close and or volume columns.
     :param string fn_name: function name
-    :return pd.Series or List(pd.Series, ...): a Pandas Series with data result or 
+    :return pd.Series or List(pd.Series, ...): a Pandas Series with data result or
         a tuple of pd.series.
     """
     num_rows = len(ohlc) - len(data)
     result = list((np.nan,) * num_rows) + data.tolist()
     data = pd.Series(result, index=ohlc.index, name=fn_name).bfill()
     return data
+
 
 def ad(data):
     """
@@ -112,7 +118,7 @@ def ad(data):
 def adosc(data, short_period=3, long_period=10):
     """
     Accumulation/Distribution Oscillator:
-        The Accumulation/Distribution Oscillator is also known 
+        The Accumulation/Distribution Oscillator is also known
         as the Chaikin Oscillator, after its inventor.
     https://tulipindicators.org/adosc
 
@@ -162,7 +168,7 @@ def apo(data, short_period=20, long_period=26):
     """
     Absolute Price Oscillator.
     https://tulipindicators.org/apo
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param short_period: TODO
     :param long_period: TODO
@@ -229,7 +235,7 @@ def avgprice(data):
 def bbands(data, period=20, stddev=2):
     """
     Bollinger Bands:
-        The Bollinger Bands indicator calculates three results. 
+        The Bollinger Bands indicator calculates three results.
         A middle band, which is a Simple Moving Average
         Also an upper and lower band, which are spaced off the middle band
         and calculated using standard deviations.
@@ -269,8 +275,8 @@ def cci(data, period=20):
 def cmo(data, period=14):
     """
     Chande Momentum Oscillator:
-        The Commodity Channel Index indicator is used to detect trends. 
-        It works by taking a Simple Moving Average of the Typical Price 
+        The Commodity Channel Index indicator is used to detect trends.
+        It works by taking a Simple Moving Average of the Typical Price
         and comparing it to the amount of volatility in Typical Price.
     https://tulipindicators.org/cci
 
@@ -324,10 +330,10 @@ def cvi(data, period=14):
 def decay(data, period):
     """
     Linear Decay:
-        Decay is a simple function used to propagate signals from the past into the future. 
+        Decay is a simple function used to propagate signals from the past into the future.
         It is useful in conjunction with algorithm trading and machine learning functions.
     https://tulipindicators.org/decay
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -339,7 +345,7 @@ def dema(data, period=50):
     """
     Double Exponential Moving Average.
     https://tulipindicators.org/dema
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -351,7 +357,7 @@ def di(data, period=14):
     """
     Directional Indicator.
     https://tulipindicators.org/di
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -363,7 +369,7 @@ def dm(data, period=14):
     """
     Directional Movement.
     https://tulipindicators.org/dm
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -375,7 +381,7 @@ def dpo(data, period=100):
     """
     Detrended Price Oscillator.
     https://tulipindicators.org/dpo
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -387,7 +393,7 @@ def dx(data, period=14):
     """
     Directional Movement Index.
     https://tulipindicators.org/dx
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -399,7 +405,7 @@ def edecay(data, period):
     """
     Exponential Decay.
     https://tulipindicators.org/edecay
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -411,7 +417,7 @@ def ema(data, period=100):
     """
     Exponential Moving Average.
     https://tulipindicators.org/ema
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -423,7 +429,7 @@ def emv(data):
     """
     Ease Of Movement.
     https://tulipindicators.org/emv
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :return pd.Series: indicator results as pandas Series instance.
     """
@@ -434,7 +440,7 @@ def fisher(data, period=10):
     """
     Fisher Transform.
     https://tulipindicators.org/fisher
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -446,7 +452,7 @@ def fosc(data, period=14):
     """
     Forecast Oscillator.
     https://tulipindicators.org/fosc
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -458,7 +464,7 @@ def hma(data, period=200):
     """
     Hull Moving Average.
     https://tulipindicators.org/hma
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -470,7 +476,7 @@ def kama(data, period=10):
     """
     Kaufman Adaptive Moving Average.
     https://tulipindicators.org/kama
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -482,7 +488,7 @@ def kvo(data, short_period=34, long_period=55):
     """
     Klinger Volume Oscillator.
     https://tulipindicators.org/kvo
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param short_period: TODO
     :param long_period: TODO
@@ -495,7 +501,7 @@ def lag(data, period):
     """
     Lag.
     https://tulipindicators.org/lag
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -507,7 +513,7 @@ def linreg(data, period=50):
     """
     Linear Regression.
     https://tulipindicators.org/linreg
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -519,7 +525,7 @@ def linregintercept(data, period=10):
     """
     Linear Regression Intercept.
     https://tulipindicators.org/linregintercept
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -531,7 +537,7 @@ def linregslope(data, period=50):
     """
     Linear Regression Slope.
     https://tulipindicators.org/linregslope
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -543,7 +549,7 @@ def macd(data, short_period=12, long_period=26, signal_period=9):
     """
     Moving Average Convergence/Divergence.
     https://tulipindicators.org/macd
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param short_period: TODO
     :param long_period: TODO
@@ -557,7 +563,7 @@ def marketfi(data):
     """
     Market Facilitation Index.
     https://tulipindicators.org/marketfi
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :return pd.Series: indicator results as pandas Series instance.
     """
@@ -568,7 +574,7 @@ def mass(data, period=25):
     """
     Mass Index.
     https://tulipindicators.org/mass
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -580,7 +586,7 @@ def md(data, period=14):
     """
     Mean Deviation Over Period.
     https://tulipindicators.org/md
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -592,7 +598,7 @@ def mfi(data, period=14):
     """
     Money Flow Index.
     https://tulipindicators.org/mfi
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -604,7 +610,7 @@ def mom(data, period=9):
     """
     Momentum.
     https://tulipindicators.org/mom
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -616,7 +622,7 @@ def msw(data, period=25):
     """
     Mesa Sine Wave.
     https://tulipindicators.org/msw
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -628,7 +634,7 @@ def natr(data, period=14):
     """
     Normalized Average True Range.
     https://tulipindicators.org/natr
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -638,12 +644,12 @@ def natr(data, period=14):
 
 def nvi(data):
     """
-    Negative Volume Index: 
-        tries to show what smart investors are doing 
+    Negative Volume Index:
+        tries to show what smart investors are doing
         by staying flat on up-volume days
         and only changing on down-volume days.
     https://tulipindicators.org/nvi
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :return pd.Series: indicator results as pandas Series instance.
     """
@@ -654,7 +660,7 @@ def obv(data):
     """
     On Balance Volume.
     https://tulipindicators.org/obv
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :return pd.Series: indicator results as pandas Series instance.
     """
@@ -665,7 +671,7 @@ def ppo(data, short_period=12, long_period=26):
     """
     Percentage Price Oscillator.
     https://tulipindicators.org/ppo
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param short_period: TODO
     :param long_period: TODO
@@ -681,7 +687,7 @@ def psar(data, acceleration_factor_step=0.02, acceleration_factor_maximum=0.21):
         lower factor_maximum = less sensitivity
         https://school.stockcharts.com/doku.php?id=technical_indicators:parabolic_sar
     https://tulipindicators.org/psar
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param acceleration_factor_step: TODO
     :param acceleration_factor_maximum: TODO
@@ -693,10 +699,10 @@ def psar(data, acceleration_factor_step=0.02, acceleration_factor_maximum=0.21):
 def pvi(data):
     """
     Positive Volume Index:
-        Positive Volume Index is very similar to Negative Volume Index, 
+        Positive Volume Index is very similar to Negative Volume Index,
         but changes on volume-up days instead.
     https://tulipindicators.org/pvi
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :return pd.Series: indicator results as pandas Series instance.
     """
@@ -719,10 +725,10 @@ def qstick(data, period=200):
 def roc(data, period=9):
     """
     Rate Of Change:
-           The Rate of Change indicator calculates the change 
+           The Rate of Change indicator calculates the change
            between the current price and the price n bars ago.
     https://tulipindicators.org/roc
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -733,10 +739,10 @@ def roc(data, period=9):
 def rocr(data, period=9):
     """
     Rate Of Change Ratio:
-        The Rate of Change Ratio indicator calculates the change 
+        The Rate of Change Ratio indicator calculates the change
         between the current price and the price n bars ago
     https://tulipindicators.org/rocr
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -748,7 +754,7 @@ def rsi(data, period=14):
     """
     Relative Strength Index.
     https://tulipindicators.org/rsi
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -760,7 +766,7 @@ def sma(data, period=200):
     """
     Simple Moving Average.
     https://tulipindicators.org/sma
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -771,11 +777,11 @@ def sma(data, period=200):
 def stderr(data, period=50):
     """
     Standard Error Over Period.
-        Standard Error, for a specified period, measures how far prices have deviated from a 
-        Linear Regression Line for the same period. ... If all the closing prices equaled the 
+        Standard Error, for a specified period, measures how far prices have deviated from a
+        Linear Regression Line for the same period. ... If all the closing prices equaled the
         corresponding values of the Linear Regression Line, Standard Error would be zero.
     https://tulipindicators.org/stderr
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -787,7 +793,7 @@ def stoch(data, pct_k_period=14, pct_k_slowing_period=3, pct_d_period=3):
     """
     Stochastic Oscillator.
     https://tulipindicators.org/stoch
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param %k_period: TODO
     :param %k_slowing_period: TODO
@@ -801,7 +807,7 @@ def tema(data, period=200):
     """
     Triple Exponential Moving Average.
     https://tulipindicators.org/tema
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -813,7 +819,7 @@ def tr(data):
     """
     True Range.
     https://tulipindicators.org/tr
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :return pd.Series: indicator results as pandas Series instance.
     """
@@ -823,11 +829,11 @@ def tr(data):
 def trima(data, period=100):
     """
     Triangular Moving Average:
-        The Triangular Moving Average is similar to the Simple Moving Average but instead 
-        places more weight on middle portion of the smoothing period and less weight 
+        The Triangular Moving Average is similar to the Simple Moving Average but instead
+        places more weight on middle portion of the smoothing period and less weight
         on the newest and oldest bars in the period.
-        
-        It takes one parameter, the period n. 
+
+        It takes one parameter, the period n.
         Larger values for n will have a greater smoothing effect on the input data.
     https://tulipindicators.org/trima
 
@@ -854,7 +860,7 @@ def tsf(data, period=10):
     """
     Time Series Forecast.
     https://tulipindicators.org/tsf
-    
+
     :param pd.DataFrame data: a DataFrame instance with data columns (open, high, low, close, volume).
     :param int period: number of period used for indicators calcs.
     :return pd.Series: indicator results as pandas Series instance.
@@ -890,8 +896,8 @@ def ultosc(data, short_period=7, medium_period=14, long_period=28):
 def vhf(data, period=50):
     """
     Vertical Horizontal Filter:
-        Vertical Horizontal Filter (VHF) is a trending and ranging indicator authored by Adam White. 
-        The VHF uses the highest close minus the lowest close divided by the sum of the absolute value 
+        Vertical Horizontal Filter (VHF) is a trending and ranging indicator authored by Adam White.
+        The VHF uses the highest close minus the lowest close divided by the sum of the absolute value
         of the difference of the highest and lowest over a user defined time period.
     https://tulipindicators.org/vhf
 
@@ -905,7 +911,7 @@ def vhf(data, period=50):
 def vidya(data, short_period=14, long_period=34, alpha=0.2):
     """
     Variable Index Dynamic Average:
-        The Variable Index Dynamic Average indicator modifies the Exponential Moving Average 
+        The Variable Index Dynamic Average indicator modifies the Exponential Moving Average
         by varying the smoothness based on recent volatility.
     https://tulipindicators.org/vidya
 
@@ -947,7 +953,7 @@ def vosc(data, short_period=14, long_period=28):
 def vwma(data, period=100):
     """
     Volume Weighted Moving Average:
-        The Volume Weighted Moving Average is similar to a Simple Moving Average, 
+        The Volume Weighted Moving Average is similar to a Simple Moving Average,
         but it weights each bar by its volume.
     https://tulipindicators.org/vwma
 
@@ -983,7 +989,7 @@ def wcprice(data):
 def wilders(data, period=50):
     """
     Wilders Smoothing:
-           Larger values for period will have a greater smoothing effect on the input data 
+           Larger values for period will have a greater smoothing effect on the input data
            but will also create more lag.
     https://tulipindicators.org/wilders
 
@@ -1009,16 +1015,16 @@ def willr(data, period=14):
 def wma(data, period=50):
     """
     Weighted Moving Average:
-        The Weighted Moving Average is similar to the Simple Moving Average but instead 
-        places more weight on more recent bars in the smoothing period 
+        The Weighted Moving Average is similar to the Simple Moving Average but instead
+        places more weight on more recent bars in the smoothing period
         and less weight on the oldest bars in the period.
-    
-        It takes one parameter, the period. 
+
+        It takes one parameter, the period.
         Larger values for period will have a greater smoothing effect on the input data.
-    
-        It is calculated for each bar as the weighted arithmetic mean of the previous n bars. 
-        For example, the weights for an n of 4 are: 4, 3, 2, 1. 
-        The weights w for a n of 7 are: 7, 6, 5, 4, 3, 2, 1. 
+
+        It is calculated for each bar as the weighted arithmetic mean of the previous n bars.
+        For example, the weights for an n of 4 are: 4, 3, 2, 1.
+        The weights w for a n of 7 are: 7, 6, 5, 4, 3, 2, 1.
         So in that example, the most recent bar influences the average 7 times as much as the oldest bar.
     https://tulipindicators.org/wma
 

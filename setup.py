@@ -7,7 +7,8 @@ from pantulipy import (__version__, __author__, __package__, __email__, __licens
 setup(
     name=__package__,
     version=__version__,
-    packages=find_packages(exclude=['.idea*', 'build*', '{}.egg-info*'.format(__package__), 'dist*', 'venv*']),
+    packages=find_packages(
+        exclude=['.idea*', 'build*', '{}.egg-info*'.format(__package__), 'dist*', 'venv*']),
     url='https://github.com/havocesp/{}'.format(__package__),
     license=__license__,
     packages_dir={'': __package__},
