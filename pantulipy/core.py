@@ -3,7 +3,7 @@ import inspect as insp
 
 import numpy as np
 import pandas as pd
-import tulipy
+import newtulipy as tulipy
 
 _OHLCV = ['open', 'high', 'low', 'close', 'volume']
 _FUNCS = sorted([f for f in dir(tulipy) if f[0].islower() and 'lib' not in f])
