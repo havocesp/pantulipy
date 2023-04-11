@@ -1,3 +1,4 @@
 newtulipy
 numpy=>1.14.0
 pandas=>23.0.0
+cython
