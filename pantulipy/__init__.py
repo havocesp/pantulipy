@@ -20,7 +20,7 @@ from .core import (ad, adosc, adx, adxr, ao, apo, aroon, aroonosc, atr, avgprice
                   psar, pvi, qstick, roc, rocr, rsi, sma, stderr, stoch, tema, tr, trima, trix, tsf, typprice, ultosc,
                   vhf, vidya, volatility, vosc, vwma, wad, wcprice, wilders, willr, wma, zlema, InvalidOptionError)
 
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 __author__ = 'Daniel J. Umpierrez'
 __license__ = 'UNLICENSE'
 __package__ = 'pantulipy'
@@ -28,11 +28,11 @@ __description__ = 'A Pandas over then Tulipy technical indicators library.'
 __site__ = 'https://github.com/havocesp/' + __package__
 __email__ = 'umpierrez@pm.me'
 __dependencies__ = [
-    'tulipy',
+    'newtulipy',
     'pandas'
 ]
 
-__keywords__ = ['pantulipy', 'tulipy', 'technical-analisys', 'indicator', 'indicators', 'pandas', 'python', 'finance',
+__keywords__ = ['pantulipy', 'newtulipy', 'technical-analisys', 'indicator', 'indicators', 'pandas', 'python', 'finance',
                 'exchange', 'stock', 'bitcoin', 'crypto-currencies', 'cryptocurrencies', 'altcoin', 'altcoins']
 
 
