@@ -1,3 +1,3 @@
-tulipy=>0.2.1
+newtulipy
 numpy=>1.14.0
 pandas=>23.0.0
