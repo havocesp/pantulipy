@@ -7,12 +7,12 @@ from .core import (ad, adosc, adx, adxr, ao, apo, aroon, aroonosc, atr, avgprice
                    linreg, linregintercept, linregslope, macd, marketfi, mass, md, mfi, mom, msw, natr, nvi, obv, ppo,
                    psar, pvi, qstick, roc, rocr, rsi, sma, stderr, stoch, tema, tr, trima, trix, tsf, typprice, ultosc,
                    vhf, vidya, volatility, vosc, vwma, wad, wcprice, wilders, willr, wma, zlema, InvalidOptionError)
-import os
+from pathlib import Path
 import sys
 
 # global debug flag
 DEBUG = True
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = str(Path(__file__).parent)
 
 globals().update(BASE_DIR=BASE_DIR)
 globals().update(DEBUG=DEBUG)
@@ -20,7 +20,7 @@ globals().update(DEBUG=DEBUG)
 sys.path.append(BASE_DIR)
 
 
-__version__ = '0.1.2'
+__version__ = '0.1.3'
 __author__ = 'Daniel J. Umpierrez'
 __license__ = 'UNLICENSE'
 __package__ = 'pantulipy'
