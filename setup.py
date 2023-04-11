@@ -8,8 +8,8 @@ setup(
     name=__package__,
     version=__version__,
     packages=find_packages(
-        exclude=['.idea*', 'build*', '{}.egg-info*'.format(__package__), 'dist*', 'venv*']),
-    url='https://github.com/havocesp/{}'.format(__package__),
+        exclude=['.idea*', '.vs*', 'build*', f'{__package__}.egg-info*', 'dist*', 'venv*']),
+    url=f'https://github.com/havocesp/{__package__}',
     license=__license__,
     packages_dir={'': __package__},
     keywords=__keywords__,
