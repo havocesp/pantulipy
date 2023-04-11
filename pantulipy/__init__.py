@@ -29,7 +29,9 @@ __site__ = 'https://github.com/havocesp/' + __package__
 __email__ = '10012416+havocesp@users.noreply.github.com'
 __dependencies__ = [
     'newtulipy',
-    'pandas'
+    'pandas',
+    'numpy',
+    'cython'
 ]
 
 __keywords__ = ['pantulipy', 'newtulipy', 'technical-analisys', 'indicator', 'indicators', 'pandas', 'python', 'finance',
