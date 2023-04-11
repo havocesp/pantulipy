@@ -3,17 +3,18 @@
 Pandas over then Tulipy technical indicators library.
 
 * Author: Daniel J. Umpierrez
-* Version: 0.1.2
+* Version: 0.1.3
 * License: UNLICENSE
 
 ## Description
 
-This project is created to integrate **tulipy** functions with **Pandas** library.
+This project is created to integrate **newtulipy** functions with **Pandas** library.
 
 ## Requirements
+ * cython
  * numpy
  * pandas
- * tulipy
+ * newtulipy
  
 ## Installation
 
@@ -24,8 +25,9 @@ This project is created to integrate **tulipy** functions with **Pandas** librar
 ```bash
 # requirements installation
 sudo apt-get update
-sudo apt-get install python3-pandas python3-pip  python3-cython
-sudo pip install --user tulipy
+sudo apt-get install python3-numpy python3-pandas python3-pip  python3-cython cython3
+pip3 install newtulipy
+pip3 install git+https://github.com/havocesp/pantulipy
 ```
 
 ## Usage
@@ -47,6 +49,10 @@ print(ema(ohlc_data, 5).tail())
  * [ ] Write some tests.
 
 ## Changelog
+
+### 0.1.3
+ * Cython and numpy added as dependencies.
+ * Replace tulipy with newtulipy.
 ### 0.1.2
  * Added most common default values for many functions.
  * Some code refactor.
