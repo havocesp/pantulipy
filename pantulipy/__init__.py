@@ -22,7 +22,7 @@ sys.path.append(BASE_DIR)
 
 __version__ = '0.1.3'
 __author__ = 'Daniel J. Umpierrez'
-__license__ = 'UNLICENSE'
+__license__ = 'MIT'
 __package__ = 'pantulipy'
 __description__ = 'A Pandas over then Tulipy technical indicators library.'
 __site__ = 'https://github.com/havocesp/' + __package__
