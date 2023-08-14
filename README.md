@@ -4,7 +4,7 @@ Pandas over then Tulipy technical indicators library.
 
 * Author: Daniel J. Umpierrez
 * Version: 0.1.3
-* License: UNLICENSE
+* License: MIT
 
 ## Description
 
