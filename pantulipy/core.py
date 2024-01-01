@@ -60,9 +60,8 @@ def _tup(fn, ohlc, *args, **kwargs):
     """
     fn_params = list(args) + list(kwargs.values())
     fn_name = fn.__name__.upper()
-    data = fn(*_get_ohlcv_arrays(fn, ohlc), *fn_params)
 
-    if data is not None:
+    if (data := fn(*_get_ohlcv_arrays(fn, ohlc), *fn_params)) is not None:
         if type(data) == tuple:
             data_tmp = pd.DataFrame()
             i = 0
